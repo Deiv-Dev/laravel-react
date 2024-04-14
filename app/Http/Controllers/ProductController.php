@@ -3,16 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Service\Product\ShowProductService;
 
 class ProductController extends Controller
 {
+    private $showProductService;
+
+    public function __construct(ShowProductService $showProductService)
+    {
+        $this->showProductService = $showProductService;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        try {
+            $product = $this->showProductService->showAllProduct();
+            return response()->json($product);
+
+        } catch (Exception $e) {
+            logger("error");
+            return response()->json(['error' => 'fetching products']);
+        }
+
     }
 
     /**

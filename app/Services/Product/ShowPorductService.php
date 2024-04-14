@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Service\Product;
 
 use \App\Models\Product;
 use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 
 
-class ShowAllProductService
+class ShowProductService
 {
     public function showAllProduct(): Collection
     {
