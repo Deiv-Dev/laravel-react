@@ -7,14 +7,18 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Service\Product\ShowProductService;
+use Psr\Log\LoggerInterface;
+
 
 class ProductController extends Controller
 {
     private $showProductService;
+    private $logger;
 
-    public function __construct(ShowProductService $showProductService)
+    public function __construct(ShowProductService $showProductService, LoggerInterface $logger)
     {
         $this->showProductService = $showProductService;
+        $this->logger = $logger;
     }
     /**
      * Display a listing of the resource.
@@ -24,9 +28,8 @@ class ProductController extends Controller
         try {
             $product = $this->showProductService->showAllProduct();
             return response()->json($product);
-
         } catch (Exception $e) {
-            logger("error");
+            $this->logger->error($e->getMessage() . " on line " . $e->getLine());
             return response()->json(['error' => 'fetching products']);
         }
 
@@ -53,7 +56,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+
     }
 
     /**
